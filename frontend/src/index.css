@@ -1,0 +1,19 @@
+:root {
+  --primary: #0e2a4a;
+  --primary-dark: #081a30;
+  --accent: #d4a24c;
+  --light: #f4efe6;
+  --danger: #b3413a;
+
+  font: 16px/1.5 'Segoe UI', system-ui, Roboto, sans-serif;
+  color: var(--primary-dark);
+  background: var(--light);
+}
+
+body {
+  margin: 0;
+}
+
+h1, h2 {
+  color: var(--primary-dark);
+}

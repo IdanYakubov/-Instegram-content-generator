@@ -1,0 +1,184 @@
+.app {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 20px 64px;
+}
+
+.app-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.app-header h1 {
+  margin: 0 0 8px;
+  font-size: 28px;
+}
+
+.app-header p {
+  margin: 0;
+  color: #4a5a70;
+}
+
+.app-main {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+@media (max-width: 800px) {
+  .app-main {
+    grid-template-columns: 1fr;
+  }
+}
+
+.post-form,
+.posts-section {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(14, 42, 74, 0.08);
+}
+
+.post-form h2,
+.posts-section h2 {
+  margin-top: 0;
+  font-size: 18px;
+}
+
+.field-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 14px;
+  font-size: 14px;
+}
+
+.field input {
+  padding: 8px 10px;
+  border: 1px solid #ccd3dd;
+  border-radius: 6px;
+  font-size: 14px;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  background: var(--accent);
+  color: var(--primary-dark);
+  font-weight: 600;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+button.primary {
+  background: var(--primary);
+  color: #fff;
+}
+
+button.danger {
+  background: var(--danger);
+  color: #fff;
+}
+
+.error {
+  color: var(--danger);
+  font-size: 13px;
+}
+
+.empty-state {
+  color: #6b7686;
+}
+
+.post-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.post-card {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 16px;
+  border: 1px solid #e4e8ee;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+@media (max-width: 600px) {
+  .post-card {
+    grid-template-columns: 1fr;
+  }
+}
+
+.post-media img,
+.post-media video {
+  width: 100%;
+  border-radius: 8px;
+  display: block;
+}
+
+.post-details {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.post-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.status {
+  font-size: 12px;
+  padding: 2px 10px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.status-draft {
+  background: #eef1f5;
+  color: #4a5a70;
+}
+
+.status-published {
+  background: #e2f4ea;
+  color: #1f7a4c;
+}
+
+.post-type {
+  font-size: 12px;
+  color: #6b7686;
+}
+
+.caption-editor {
+  width: 100%;
+  box-sizing: border-box;
+  border: 1px solid #ccd3dd;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-size: 14px;
+  font-family: inherit;
+  resize: vertical;
+  overflow-y: auto;
+  field-sizing: fixed;
+}
+
+.post-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
