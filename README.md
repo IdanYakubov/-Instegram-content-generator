@@ -15,6 +15,9 @@ result directly to Instagram via the Graph API.
   (lowdb, `storage/db.json`), Instagram Graph API publishing.
 - `frontend/` — Vite + React app for creating content, editing captions, and
   publishing.
+- `android/` — native Kotlin/Compose Android app: the same content system running
+  fully offline (Canvas/MediaCodec instead of Sharp/FFmpeg, no backend), publishing via
+  an Instagram share intent instead of the Graph API. See `android/README.md`.
 
 ## Running locally
 
