@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { createPost } from '../api';
 
-export default function PostForm({ onCreated }) {
+export default function PostForm({ onCreated, brand }) {
   const [type, setType] = useState('post');
   const [headline, setHeadline] = useState('');
   const [subheadline, setSubheadline] = useState('');
@@ -70,7 +70,7 @@ export default function PostForm({ onCreated }) {
 
       <label className="field">
         כותרת
-        <input value={headline} onChange={(e) => setHeadline(e.target.value)} placeholder="מצאו את הכיוון שלכם" />
+        <input value={headline} onChange={(e) => setHeadline(e.target.value)} placeholder={brand?.tagline || 'כותרת ראשית'} />
       </label>
 
       <label className="field">
@@ -78,13 +78,13 @@ export default function PostForm({ onCreated }) {
         <input
           value={subheadline}
           onChange={(e) => setSubheadline(e.target.value)}
-          placeholder="אפליקציה שמלווה אתכם בדרך"
+          placeholder="כותרת משנה (אופציונלי)"
         />
       </label>
 
       <label className="field">
         טקסט לכפתור הקריאה לפעולה
-        <input value={ctaText} onChange={(e) => setCtaText(e.target.value)} placeholder="הורידו עכשיו" />
+        <input value={ctaText} onChange={(e) => setCtaText(e.target.value)} placeholder={brand?.defaultCta || 'קריאה לפעולה'} />
       </label>
 
       <label className="field">

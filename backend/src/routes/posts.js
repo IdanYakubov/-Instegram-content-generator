@@ -9,6 +9,7 @@ import { generatePostImage } from '../services/imageGenerator.js';
 import { generateReelVideo } from '../services/videoGenerator.js';
 import { buildCaption } from '../services/captionGenerator.js';
 import { publishToInstagram } from '../services/instagram.js';
+import { getBrand } from '../brandStore.js';
 
 const upload = multer({ dest: UPLOADS_DIR });
 const router = express.Router();
@@ -38,19 +39,20 @@ router.post('/', upload.array('screenshots', 8), async (req, res) => {
   }
 
   const id = nanoid(10);
+  const brand = await getBrand();
 
   let mediaFileName;
   if (type === 'reel') {
-    const result = await generateReelVideo({ id, screenshotPaths, headline, subheadline, ctaText });
+    const result = await generateReelVideo({ brand, id, screenshotPaths, headline, subheadline, ctaText });
     mediaFileName = result.fileName;
   } else {
-    const result = await generatePostImage({ id, screenshotPath: screenshotPaths[0], headline, subheadline, ctaText });
+    const result = await generatePostImage({ brand, id, screenshotPath: screenshotPaths[0], headline, subheadline, ctaText });
     mediaFileName = result.fileName;
   }
 
   await Promise.all(screenshotPaths.map((p) => fs.rm(p, { force: true })));
 
-  const caption = buildCaption({ headline, subheadline, ctaText, hashtags });
+  const caption = buildCaption({ brand, headline, subheadline, ctaText, hashtags });
 
   const post = {
     id,

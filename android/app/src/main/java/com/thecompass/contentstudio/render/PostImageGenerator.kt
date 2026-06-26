@@ -2,6 +2,7 @@ package com.thecompass.contentstudio.render
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import com.thecompass.contentstudio.Brand
 import com.thecompass.contentstudio.data.PostRepository
 import java.io.File
 import java.io.FileOutputStream
@@ -12,6 +13,7 @@ object PostImageGenerator {
 
     fun generate(
         repository: PostRepository,
+        brand: Brand,
         id: String,
         screenshotFile: File,
         headline: String,
@@ -21,6 +23,7 @@ object PostImageGenerator {
         val screenshot = BitmapFactory.decodeFile(screenshotFile.absolutePath)
             ?: error("Could not decode screenshot")
         val bitmap = SlideRenderer.renderSlide(
+            brand = brand,
             width = WIDTH,
             height = HEIGHT,
             screenshot = screenshot,

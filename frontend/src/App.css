@@ -32,12 +32,36 @@
   }
 }
 
+.form-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
 .post-form,
 .posts-section {
   background: #fff;
   border-radius: 12px;
   padding: 20px;
   box-shadow: 0 2px 8px rgba(14, 42, 74, 0.08);
+}
+
+.brand-settings-collapsed button {
+  width: 100%;
+  background: #fff;
+  color: var(--primary-dark);
+  border: 1px solid #e4e8ee;
+  box-shadow: 0 2px 8px rgba(14, 42, 74, 0.08);
+}
+
+.brand-colors {
+  flex-wrap: wrap;
+}
+
+.brand-colors input[type='color'] {
+  width: 48px;
+  height: 32px;
+  padding: 2px;
 }
 
 .post-form h2,

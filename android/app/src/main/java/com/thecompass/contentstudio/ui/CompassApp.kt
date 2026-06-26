@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun CompassApp(viewModel: PostViewModel) {
     val posts by viewModel.posts.collectAsState()
+    val brand by viewModel.brand.collectAsState()
     val isGenerating by viewModel.isGenerating.collectAsState()
     val errorMessage by viewModel.errorMessage.collectAsState()
     val context = LocalContext.current
@@ -38,7 +39,7 @@ fun CompassApp(viewModel: PostViewModel) {
     MaterialTheme {
         Scaffold(
             topBar = {
-                TopAppBar(title = { Text("🧭 The Compass — מחולל תוכן") })
+                TopAppBar(title = { Text("${brand.logoEmoji} ${brand.name} — מחולל תוכן") })
             },
         ) { padding ->
             Column(
@@ -49,6 +50,7 @@ fun CompassApp(viewModel: PostViewModel) {
                     .padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
+                BrandSettingsSection(brand = brand, onSave = viewModel::updateBrand)
                 PostFormSection(isGenerating = isGenerating, onSubmit = viewModel::createPost)
                 PostListSection(
                     posts = posts,

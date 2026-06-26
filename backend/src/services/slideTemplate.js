@@ -1,5 +1,4 @@
 import sharp from 'sharp';
-import { BRAND } from '../brand.js';
 import { wrapText, escapeXml } from './textWrap.js';
 
 async function screenshotToDataUri(screenshotBuffer) {
@@ -28,6 +27,7 @@ function renderTextBlock(lines, { x, y, fontSize, lineHeight, fill, weight = 700
  * the reel slideshow generator so both outputs look like the same product.
  */
 export async function renderSlide({
+  brand,
   width,
   height,
   screenshotBuffer,
@@ -37,7 +37,7 @@ export async function renderSlide({
   showCta = false,
   showLogo = true,
 }) {
-  const { primary, primaryDark, accent, light } = BRAND.colors;
+  const { primary, primaryDark, accent, light } = brand.colors;
   const pad = width * 0.08;
   const contentWidth = width - pad * 2;
 
@@ -70,7 +70,7 @@ export async function renderSlide({
 
   const screenshotDataUri = await screenshotToDataUri(screenshotBuffer);
 
-  const ctaLabel = ctaText || BRAND.defaultCta;
+  const ctaLabel = ctaText || brand.defaultCta;
   const ctaPillWidth = Math.min(contentWidth, Math.max(width * 0.5, ctaLabel.length * ctaFontSize * 0.62));
   const ctaPillHeight = ctaFontSize * 2.3;
 
@@ -98,7 +98,9 @@ export async function renderSlide({
 
   ${
     showLogo
-      ? `<text x="${width / 2}" y="${logoY}" font-size="${logoFontSize}" font-weight="700" fill="${accent}" text-anchor="middle" font-family="Noto Sans Hebrew, DejaVu Sans, sans-serif">🧭 THE COMPASS</text>`
+      ? `<text x="${width / 2}" y="${logoY}" font-size="${logoFontSize}" font-weight="700" fill="${accent}" text-anchor="middle" font-family="Noto Sans Hebrew, DejaVu Sans, sans-serif">${escapeXml(
+          `${brand.logoEmoji} ${brand.name.toUpperCase()}`
+        )}</text>`
       : ''
   }
 
@@ -136,14 +138,14 @@ export async function renderSlide({
   return sharp(Buffer.from(svg)).png().toBuffer();
 }
 
-export async function renderOutroSlide({ width, height, headline, ctaText }) {
-  const { primary, primaryDark, accent, light } = BRAND.colors;
+export async function renderOutroSlide({ brand, width, height, headline, ctaText }) {
+  const { primary, primaryDark, accent, light } = brand.colors;
   const logoFontSize = width * 0.07;
   const taglineFontSize = width * 0.038;
   const ctaFontSize = width * 0.034;
   const compassR = width * 0.45;
 
-  const headlineLines = wrapText(headline || BRAND.tagline, {
+  const headlineLines = wrapText(headline || brand.tagline, {
     maxWidthPx: width * 0.8,
     fontSize: taglineFontSize,
     maxLines: 2,
@@ -161,8 +163,12 @@ export async function renderOutroSlide({ width, height, headline, ctaText }) {
   <g opacity="0.1" stroke="${accent}" fill="none" stroke-width="3">
     <circle cx="${width / 2}" cy="${height * 0.4}" r="${compassR}" />
   </g>
-  <text x="${width / 2}" y="${height * 0.36}" font-size="${logoFontSize}" font-weight="800" fill="${accent}" text-anchor="middle" font-family="Noto Sans Hebrew, DejaVu Sans, sans-serif">🧭</text>
-  <text x="${width / 2}" y="${height * 0.46}" font-size="${width * 0.06}" font-weight="800" fill="#FFFFFF" text-anchor="middle" font-family="Noto Sans Hebrew, DejaVu Sans, sans-serif">THE COMPASS</text>
+  <text x="${width / 2}" y="${height * 0.36}" font-size="${logoFontSize}" font-weight="800" fill="${accent}" text-anchor="middle" font-family="Noto Sans Hebrew, DejaVu Sans, sans-serif">${escapeXml(
+    brand.logoEmoji
+  )}</text>
+  <text x="${width / 2}" y="${height * 0.46}" font-size="${width * 0.06}" font-weight="800" fill="#FFFFFF" text-anchor="middle" font-family="Noto Sans Hebrew, DejaVu Sans, sans-serif">${escapeXml(
+    brand.name.toUpperCase()
+  )}</text>
   ${renderTextBlock(headlineLines, {
     x: width / 2,
     y: height * 0.55,
@@ -173,7 +179,7 @@ export async function renderOutroSlide({ width, height, headline, ctaText }) {
   })}
   <rect x="${width * 0.2}" y="${height * 0.85}" width="${width * 0.6}" height="${ctaFontSize * 2.3}" rx="${(ctaFontSize * 2.3) / 2}" fill="${accent}" />
   <text x="${width / 2}" y="${height * 0.85 + ctaFontSize * 1.55}" font-size="${ctaFontSize}" font-weight="700" fill="${primaryDark}" text-anchor="middle" font-family="Noto Sans Hebrew, DejaVu Sans, sans-serif" direction="rtl">${escapeXml(
-    ctaText || BRAND.defaultCta
+    ctaText || brand.defaultCta
   )}</text>
 </svg>`;
 

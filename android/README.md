@@ -1,12 +1,17 @@
-# The Compass — Android Content Studio
+# Android Content Studio
 
 A fully on-device, native Kotlin/Jetpack Compose Android app that ports the
 backend/frontend system in `../backend` and `../frontend` to run with **no server at
 all**. Everything happens locally on the phone:
 
+- **Branding**: name, logo emoji, tagline, default CTA, hashtags, and colors are all
+  configurable from an in-app settings screen (`ui/BrandSettingsSection.kt`), persisted
+  via `data/BrandRepository.kt` (`brand.json` in app-internal storage). No brand is
+  hardcoded — repurpose the app for any business by editing these settings.
 - **Image/video rendering**: Android `Canvas`/`Bitmap` (replaces Sharp/SVG) and the
   byte-buffer `MediaCodec`/`MediaMuxer` APIs (replaces FFmpeg) for the Ken Burns-style
-  reel, all in `app/src/main/java/com/thecompass/contentstudio/render/`.
+  reel, all in `app/src/main/java/com/thecompass/contentstudio/render/`, parameterized
+  by the current `Brand`.
 - **Storage**: a small JSON file in app-internal storage (replaces lowdb) — see
   `data/PostRepository.kt`.
 - **Publishing**: there is no Instagram Graph API call (that requires a public media

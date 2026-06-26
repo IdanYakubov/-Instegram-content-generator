@@ -6,10 +6,11 @@ import { renderSlide } from './slideTemplate.js';
 
 const POST_SIZE = { width: 1080, height: 1080 };
 
-export async function generatePostImage({ id, screenshotPath, headline, subheadline, ctaText }) {
+export async function generatePostImage({ brand, id, screenshotPath, headline, subheadline, ctaText }) {
   const screenshotBuffer = await fs.readFile(screenshotPath);
 
   const pngBuffer = await renderSlide({
+    brand,
     width: POST_SIZE.width,
     height: POST_SIZE.height,
     screenshotBuffer,

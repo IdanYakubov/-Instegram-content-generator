@@ -1,20 +1,12 @@
-export const BRAND = {
-  name: 'The Compass',
-  tagline: 'מצאו את הכיוון שלכם',
-  audience: 'יזמים, חיילים משוחררים, וכל מי שמרגיש שסטה מהמסלול',
-  defaultCta: 'הורידו את The Compass ומצאו את הדרך שלכם',
-  hashtags: [
-    'TheCompass',
-    'מצאתי_כיוון',
-    'יזמות',
-    'חיילים_משוחררים',
-    'הכוונה_אישית',
-    'התחלה_מחדש',
-    'מנטורינג',
-  ],
+export const DEFAULT_BRAND = {
+  name: 'המותג שלי',
+  logoEmoji: '✨',
+  tagline: 'התוכן שמייצג אתכם נכון',
+  defaultCta: 'עקבו אחרינו',
+  hashtags: ['תוכן', 'שיווק_דיגיטלי', 'רשתות_חברתיות'],
   colors: {
-    primary: '#0E2A4A',
-    primaryDark: '#081A30',
+    primary: '#1E293B',
+    primaryDark: '#0F172A',
     accent: '#D4A24C',
     light: '#F4EFE6',
   },

@@ -8,8 +8,9 @@ for (const dir of [STORAGE_DIR, UPLOADS_DIR, GENERATED_DIR]) {
 }
 
 const adapter = new JSONFile(DB_FILE);
-export const db = new Low(adapter, { posts: [] });
+export const db = new Low(adapter, { posts: [], brand: null });
 
 await db.read();
-db.data ||= { posts: [] };
+db.data ||= { posts: [], brand: null };
+db.data.brand ??= null;
 await db.write();

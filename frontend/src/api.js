@@ -1,3 +1,19 @@
+export async function fetchBrand() {
+  const res = await fetch('/api/brand');
+  if (!res.ok) throw new Error('שגיאה בטעינת הגדרות המותג');
+  return res.json();
+}
+
+export async function updateBrand(brand) {
+  const res = await fetch('/api/brand', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(brand),
+  });
+  if (!res.ok) throw new Error('שגיאה בשמירת הגדרות המותג');
+  return res.json();
+}
+
 export async function fetchPosts() {
   const res = await fetch('/api/posts');
   if (!res.ok) throw new Error('שגיאה בטעינת הפוסטים');

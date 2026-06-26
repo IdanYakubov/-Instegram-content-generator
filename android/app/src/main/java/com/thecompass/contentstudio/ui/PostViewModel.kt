@@ -4,7 +4,9 @@ import android.app.Application
 import android.net.Uri
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import com.thecompass.contentstudio.Brand
 import com.thecompass.contentstudio.CaptionGenerator
+import com.thecompass.contentstudio.data.BrandRepository
 import com.thecompass.contentstudio.data.PostRepository
 import com.thecompass.contentstudio.model.Post
 import com.thecompass.contentstudio.model.PostStatus
@@ -24,9 +26,13 @@ import java.util.UUID
 
 class PostViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = PostRepository(application)
+    private val brandRepository = BrandRepository(application)
 
     private val _posts = MutableStateFlow<List<Post>>(emptyList())
     val posts: StateFlow<List<Post>> = _posts.asStateFlow()
+
+    private val _brand = MutableStateFlow(Brand.DEFAULT)
+    val brand: StateFlow<Brand> = _brand.asStateFlow()
 
     private val _isGenerating = MutableStateFlow(false)
     val isGenerating: StateFlow<Boolean> = _isGenerating.asStateFlow()
@@ -36,10 +42,18 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         refresh()
+        _brand.value = brandRepository.get()
     }
 
     fun refresh() {
         _posts.value = repository.getAll()
+    }
+
+    fun updateBrand(brand: Brand) {
+        viewModelScope.launch(Dispatchers.IO) {
+            brandRepository.save(brand)
+            _brand.value = brand
+        }
     }
 
     fun clearError() {
@@ -68,15 +82,16 @@ class PostViewModel(application: Application) : AndroidViewModel(application) {
                     screenshotUris.map { copyUriToCache(it) }
                 }
 
+                val currentBrand = _brand.value
                 val mediaFileName = withContext(Dispatchers.Default) {
                     if (type == PostType.REEL) {
-                        ReelGenerator.generate(repository, id, screenshotFiles, headline, subheadline, ctaText)
+                        ReelGenerator.generate(repository, currentBrand, id, screenshotFiles, headline, subheadline, ctaText)
                     } else {
-                        PostImageGenerator.generate(repository, id, screenshotFiles.first(), headline, subheadline, ctaText)
+                        PostImageGenerator.generate(repository, currentBrand, id, screenshotFiles.first(), headline, subheadline, ctaText)
                     }
                 }
 
-                val caption = CaptionGenerator.buildCaption(headline, subheadline, ctaText, extraHashtags)
+                val caption = CaptionGenerator.buildCaption(currentBrand, headline, subheadline, ctaText, extraHashtags)
                 val post = Post(
                     id = id,
                     type = type,

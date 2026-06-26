@@ -20,6 +20,7 @@ import com.thecompass.contentstudio.Brand
 object SlideRenderer {
 
     fun renderSlide(
+        brand: Brand,
         width: Int,
         height: Int,
         screenshot: Bitmap,
@@ -56,11 +57,11 @@ object SlideRenderer {
         val subY = phoneTopY + phoneHeight + height * 0.05f
         val ctaY = height * 0.93f
 
-        drawBackground(canvas, width, height)
-        drawCompassDecoration(canvas, width, height)
+        drawBackground(canvas, brand, width, height)
+        drawCompassDecoration(canvas, brand, width, height)
 
         if (showLogo) {
-            drawCenteredText(canvas, "🧭 THE COMPASS", width / 2f, logoY, logoFontSize, Brand.ACCENT, bold = true)
+            drawCenteredText(canvas, "${brand.logoEmoji} ${brand.name.uppercase()}", width / 2f, logoY, logoFontSize, brand.accent, bold = true)
         }
 
         if (headline.isNotBlank()) {
@@ -75,22 +76,22 @@ object SlideRenderer {
         if (subheadline.isNotBlank()) {
             drawWrappedText(
                 canvas, subheadline, width / 2f, subY, contentWidth.toInt(),
-                subFontSize, Brand.LIGHT, maxLines = 1, bold = false,
+                subFontSize, brand.light, maxLines = 1, bold = false,
             )
         }
 
         if (showCta) {
-            val label = ctaText.ifBlank { Brand.DEFAULT_CTA }
+            val label = ctaText.ifBlank { brand.defaultCta }
             val pillWidth = (label.length * ctaFontSize * 0.62f).coerceAtLeast(width * 0.5f).coerceAtMost(contentWidth)
             val pillHeight = ctaFontSize * 2.3f
             val pillTop = ctaY - pillHeight * 0.7f
-            drawCtaPill(canvas, width, pillTop, pillHeight, ctaFontSize, label, pillWidth)
+            drawCtaPill(canvas, brand, width, pillTop, pillHeight, ctaFontSize, label, pillWidth)
         }
 
         return bitmap
     }
 
-    fun renderOutroSlide(width: Int, height: Int, headline: String, ctaText: String): Bitmap {
+    fun renderOutroSlide(brand: Brand, width: Int, height: Int, headline: String, ctaText: String): Bitmap {
         val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
 
@@ -98,47 +99,47 @@ object SlideRenderer {
         val ctaFontSize = width * 0.034f
         val compassR = width * 0.45f
 
-        drawBackground(canvas, width, height)
+        drawBackground(canvas, brand, width, height)
 
         val ringPaint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             style = Paint.Style.STROKE
             strokeWidth = 3f
-            color = Brand.ACCENT
+            color = brand.accent
             alpha = (0.1f * 255).toInt()
         }
         canvas.drawCircle(width / 2f, height * 0.4f, compassR, ringPaint)
 
-        drawCenteredText(canvas, "🧭", width / 2f, height * 0.36f, width * 0.07f, Brand.ACCENT, bold = true)
-        drawCenteredText(canvas, "THE COMPASS", width / 2f, height * 0.46f, width * 0.06f, Color.WHITE, bold = true)
+        drawCenteredText(canvas, brand.logoEmoji, width / 2f, height * 0.36f, width * 0.07f, brand.accent, bold = true)
+        drawCenteredText(canvas, brand.name.uppercase(), width / 2f, height * 0.46f, width * 0.06f, Color.WHITE, bold = true)
 
         drawWrappedText(
-            canvas, headline.ifBlank { Brand.TAGLINE }, width / 2f, height * 0.55f, (width * 0.8f).toInt(),
-            taglineFontSize, Brand.LIGHT, maxLines = 2, bold = false,
+            canvas, headline.ifBlank { brand.tagline }, width / 2f, height * 0.55f, (width * 0.8f).toInt(),
+            taglineFontSize, brand.light, maxLines = 2, bold = false,
         )
 
-        val label = ctaText.ifBlank { Brand.DEFAULT_CTA }
+        val label = ctaText.ifBlank { brand.defaultCta }
         val pillHeight = ctaFontSize * 2.3f
         val pillTop = height * 0.85f
-        drawCtaPill(canvas, width, pillTop, pillHeight, ctaFontSize, label, width * 0.6f)
+        drawCtaPill(canvas, brand, width, pillTop, pillHeight, ctaFontSize, label, width * 0.6f)
 
         return bitmap
     }
 
-    private fun drawBackground(canvas: Canvas, width: Int, height: Int) {
+    private fun drawBackground(canvas: Canvas, brand: Brand, width: Int, height: Int) {
         val paint = Paint().apply {
-            shader = LinearGradient(0f, 0f, 0f, height.toFloat(), Brand.PRIMARY, Brand.PRIMARY_DARK, Shader.TileMode.CLAMP)
+            shader = LinearGradient(0f, 0f, 0f, height.toFloat(), brand.primary, brand.primaryDark, Shader.TileMode.CLAMP)
         }
         canvas.drawRect(0f, 0f, width.toFloat(), height.toFloat(), paint)
     }
 
-    private fun drawCompassDecoration(canvas: Canvas, width: Int, height: Int) {
+    private fun drawCompassDecoration(canvas: Canvas, brand: Brand, width: Int, height: Int) {
         val cx = width * 0.85f
         val cy = height * 0.04f
         val r = width * 0.55f
         val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply {
             style = Paint.Style.STROKE
             strokeWidth = 3f
-            color = Brand.ACCENT
+            color = brand.accent
             alpha = (0.08f * 255).toInt()
         }
         canvas.drawCircle(cx, cy, r, paint)
@@ -235,6 +236,7 @@ object SlideRenderer {
 
     private fun drawCtaPill(
         canvas: Canvas,
+        brand: Brand,
         width: Int,
         pillTop: Float,
         pillHeight: Float,
@@ -243,9 +245,9 @@ object SlideRenderer {
         pillWidth: Float,
     ) {
         val rect = RectF((width - pillWidth) / 2f, pillTop, (width - pillWidth) / 2f + pillWidth, pillTop + pillHeight)
-        val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = Brand.ACCENT }
+        val paint = Paint(Paint.ANTI_ALIAS_FLAG).apply { color = brand.accent }
         canvas.drawRoundRect(rect, pillHeight / 2f, pillHeight / 2f, paint)
         val textBaselineY = pillTop + pillHeight / 2f + fontSize * 0.32f
-        drawCenteredText(canvas, label, width / 2f, textBaselineY, fontSize, Brand.PRIMARY_DARK, bold = true)
+        drawCenteredText(canvas, label, width / 2f, textBaselineY, fontSize, brand.primaryDark, bold = true)
     }
 }

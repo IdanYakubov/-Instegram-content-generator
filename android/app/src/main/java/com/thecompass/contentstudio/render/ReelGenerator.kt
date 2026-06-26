@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Color
+import com.thecompass.contentstudio.Brand
 import com.thecompass.contentstudio.data.PostRepository
 import java.io.File
 
@@ -21,6 +22,7 @@ object ReelGenerator {
 
     fun generate(
         repository: PostRepository,
+        brand: Brand,
         id: String,
         screenshotFiles: List<File>,
         headline: String,
@@ -33,6 +35,7 @@ object ReelGenerator {
         usedScreenshots.forEachIndexed { index, file ->
             val screenshot = BitmapFactory.decodeFile(file.absolutePath) ?: error("Could not decode screenshot")
             val slideBitmap = SlideRenderer.renderSlide(
+                brand = brand,
                 width = WIDTH,
                 height = HEIGHT,
                 screenshot = screenshot,
@@ -46,7 +49,7 @@ object ReelGenerator {
         }
 
         slides += Slide(
-            SlideRenderer.renderOutroSlide(WIDTH, HEIGHT, subheadline.ifBlank { headline }, ctaText),
+            SlideRenderer.renderOutroSlide(brand, WIDTH, HEIGHT, subheadline.ifBlank { headline }, ctaText),
             OUTRO_DURATION_SECONDS,
         )
 

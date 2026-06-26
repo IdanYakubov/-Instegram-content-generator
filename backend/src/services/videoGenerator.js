@@ -46,7 +46,7 @@ async function renderSegment({ slidePath, durationSeconds, outPath }) {
   await runFfmpeg(args);
 }
 
-export async function generateReelVideo({ id, screenshotPaths, headline, subheadline, ctaText }) {
+export async function generateReelVideo({ brand, id, screenshotPaths, headline, subheadline, ctaText }) {
   const usedScreenshots = screenshotPaths.slice(0, MAX_SCREENSHOTS);
   const tmpDir = path.join(GENERATED_DIR, 'tmp', id);
   await fs.mkdir(tmpDir, { recursive: true });
@@ -57,6 +57,7 @@ export async function generateReelVideo({ id, screenshotPaths, headline, subhead
   for (let i = 0; i < usedScreenshots.length; i += 1) {
     const screenshotBuffer = await fs.readFile(usedScreenshots[i]);
     const pngBuffer = await renderSlide({
+      brand,
       width: REEL_SIZE.width,
       height: REEL_SIZE.height,
       screenshotBuffer,
@@ -72,6 +73,7 @@ export async function generateReelVideo({ id, screenshotPaths, headline, subhead
   }
 
   const outroBuffer = await renderOutroSlide({
+    brand,
     width: REEL_SIZE.width,
     height: REEL_SIZE.height,
     headline: subheadline || headline,

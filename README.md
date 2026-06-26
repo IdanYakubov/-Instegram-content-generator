@@ -1,23 +1,33 @@
-# The Compass — Instagram Content System
+# Instagram Content Generator
 
-A system for generating and publishing branded Instagram posts and reels to market
-**The Compass** app (a life-direction app for entrepreneurs, discharged soldiers, and
-anyone who feels they've strayed off course).
+A system for generating and publishing branded Instagram posts and reels for **any
+business or brand**. Brand identity (name, logo emoji, tagline, default CTA, hashtags,
+and colors) is fully configurable through a settings screen — nothing is hardcoded.
 
-Given screenshots of the app plus a headline/subheadline/CTA, it renders a branded
-static post image (Sharp/SVG) or a reel video (FFmpeg, Ken Burns zoom per slide,
-closing brand card), builds a matching caption with hashtags, and can publish the
-result directly to Instagram via the Graph API.
+Given screenshots of your app/product plus a headline/subheadline/CTA, it renders a
+branded static post image (Sharp/SVG) or a reel video (FFmpeg, Ken Burns zoom per
+slide, closing brand card), builds a matching caption with hashtags, and can publish
+the result directly to Instagram via the Graph API.
 
 ## Structure
 
-- `backend/` — Node.js/Express API: media generation (`src/services`), post storage
-  (lowdb, `storage/db.json`), Instagram Graph API publishing.
-- `frontend/` — Vite + React app for creating content, editing captions, and
-  publishing.
+- `backend/` — Node.js/Express API: brand settings (`src/brandStore.js`), media
+  generation (`src/services`), post storage (lowdb, `storage/db.json`), Instagram
+  Graph API publishing.
+- `frontend/` — Vite + React app for editing brand settings, creating content,
+  editing captions, and publishing.
 - `android/` — native Kotlin/Compose Android app: the same content system running
-  fully offline (Canvas/MediaCodec instead of Sharp/FFmpeg, no backend), publishing via
-  an Instagram share intent instead of the Graph API. See `android/README.md`.
+  fully offline (Canvas/MediaCodec instead of Sharp/FFmpeg, no backend), with its own
+  brand settings screen, publishing via an Instagram share intent instead of the Graph
+  API. See `android/README.md`.
+
+## Branding
+
+Brand identity is stored server-side (`backend`) or on-device (`android`) and applied
+everywhere: slide rendering, captions/hashtags, and the UI's color theme. Edit it from
+the "⚙️ הגדרות מותג" (brand settings) panel in the web app, or the equivalent screen in
+the Android app — no code changes needed to repurpose this tool for a different
+business.
 
 ## Running locally
 
