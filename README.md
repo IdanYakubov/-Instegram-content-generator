@@ -3,4 +3,4 @@ Instegram content generator
 
 ## North (formerly Compass)
 
-The Compass app is being renamed to **North**. The actual Compass/North app lives in a separate repository this session doesn't have access to, so the North system prompt is staged here for reference — see [`north/system-prompt.md`](north/system-prompt.md).
+The Compass app has been renamed to **North** — see [`IdanYakubov/The-Compass`](https://github.com/IdanYakubov/The-Compass), which now uses the North naming throughout (`north-api`, `north-web`, C# `North.*` namespaces). The North persona's system prompt is kept here as historical reference — see [`north/system-prompt.md`](north/system-prompt.md) — and also lives at `north-web/features/advisory/system-prompt.md` in that repo, next to the advisor seam it's meant to be wired into.
